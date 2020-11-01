@@ -26,5 +26,5 @@ class Chromosome:
         self.gene_trucks = gene_trucks
 
     def __str__(self):
-        return f'Vans ({self.gene_vans.num_vehicles}):\n{self.gene_vans}\n\n' \
+        return f'Vans ({self.gene_vans.num_vehicles}):\n{self.gene_vans}\n' \
                f'Trucks ({self.gene_trucks.num_vehicles}):\n{self.gene_trucks}'
