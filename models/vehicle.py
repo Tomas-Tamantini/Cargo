@@ -1,2 +1,2 @@
-TruckSpecs = {'capacity': 5000, 'cost_per_km': 10}
-VanSpecs = {'capacity': 600, 'cost_per_km': 5}
+TruckSpecs = {'capacity': 500, 'cost_per_km': 10}
+VanSpecs = {'capacity': 100, 'cost_per_km': 5}
