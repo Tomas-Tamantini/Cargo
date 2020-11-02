@@ -44,7 +44,10 @@ def chromosome_to_routes(chromosome):
                     demand += VanSpecs['capacity']
                 else:
                     total_demand = sum(map(lambda r: r.demand, chromosome.gene_vans.ordered_nodes))
-                    demand += total_demand % VanSpecs['capacity']
+                    additional_demand = total_demand % VanSpecs['capacity']
+                    if additional_demand == 0:
+                        additional_demand = VanSpecs['capacity']
+                    demand += additional_demand
         if demand > 0:
             new_element = i, demand
             aux_wholesales.append(new_element)

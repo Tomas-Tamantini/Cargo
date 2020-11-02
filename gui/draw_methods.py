@@ -7,13 +7,15 @@ def draw_point(x, y):
 
 
 def draw_node(node):
-    offset = 15
+    radius = 15
+    if isinstance(node, Retailer):
+        radius = 9 + 0.25 * (node.demand - 10)
     xc = node.position.x
     yc = node.position.y
-    x0 = xc - offset
-    x1 = xc + offset
-    y0 = yc - offset
-    y1 = yc + offset
+    x0 = xc - radius
+    x1 = xc + radius
+    y0 = yc - radius
+    y1 = yc + radius
 
     if isinstance(node, Retailer):
         canvas.create_oval(x0, y0, x1, y1, fill='#82eefd')
@@ -29,6 +31,8 @@ def draw_edge(node_a, node_b):
 
 
 def draw_network(network, routes=None):
+    canvas.delete('all')
+
     nodes = network.retailers + network.wholesales + network.factories
 
     if routes is not None:
@@ -37,8 +41,6 @@ def draw_network(network, routes=None):
                 node_a = route.ordered_nodes[i]
                 node_b = route.ordered_nodes[i - 1]
                 draw_edge(node_a, node_b)
-
-
 
     for node in nodes:
         draw_node(node)
