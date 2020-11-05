@@ -5,7 +5,7 @@ def plot(num_iterations, costs, temperatures):
     iterations = list(range(num_iterations + 1))
     fig, ax_cost = plt.subplots()
     ax_cost.set_xlabel('Iterations')
-    ax_cost.set_ylabel('Distance', color='tab:blue')
+    ax_cost.set_ylabel('Cost', color='tab:blue')
 
     ax_temp = ax_cost.twinx()
     ax_temp.set_ylabel('Temperature', color='tab:red')

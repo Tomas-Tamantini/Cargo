@@ -10,7 +10,7 @@ from scripts.chromosome_generator import random_chromosome
 from scripts.optimize import AnnealingSolver
 
 # Parameters
-rnd_seed = 12
+rnd_seed = 17
 nit = 100000
 initial_temperature = 10000
 final_temperature = 1
@@ -33,7 +33,7 @@ if sleep_time is not None:
 for i in range(nit):
     if i % (nit // 20) == 0:
         percentage = 100 * i // nit
-        print(f'{percentage}%')
+        print(f'{percentage}% - cost {solver.current_cost}')
     change_happened, _ = solver.make_change()
     if change_happened and animate:
         draw_network(net, chromosome_to_routes(solver.chromosome))
