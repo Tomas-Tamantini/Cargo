@@ -1,17 +1,16 @@
+from random import randint, random
+
 from gui.canvas import canvas
+from gui.colors import *
 from models.node import Retailer, Wholesale, Factory
 
 
-def draw_point(x, y):
-    canvas.create_oval(x - 2, y - 2, x + 2, y + 2, fill='#002200')
-
-
 def draw_node(node, color=None):
-    outline_color = 'black' if color is None else color
+    outline_color = outline_default_color if color is None else color
     width = 1 if color is None else 2
-    radius = 15
+    radius = 18 if not isinstance(node, Wholesale) else 15
     if isinstance(node, Retailer):
-        radius = 9 + 0.25 * (node.demand - 10)
+        radius = 12 + 0.25 * (node.demand - 10)
     xc = node.position.x
     yc = node.position.y
     x0 = xc - radius
@@ -20,16 +19,34 @@ def draw_node(node, color=None):
     y1 = yc + radius
 
     if isinstance(node, Retailer):
-        canvas.create_oval(x0, y0, x1, y1, fill='#82eefd', outline=outline_color, width=width)
-        canvas.create_text(xc, yc, text=str(node.demand))
+        canvas.create_oval(x0, y0, x1, y1, fill=retailer_color, outline=outline_color, width=width)
+        draw_text(str(node.demand), xc, yc, color=black)
     elif isinstance(node, Wholesale):
-        canvas.create_polygon(x0, yc, xc, y0, x1, yc, xc, y1, fill='#f9e076', outline=outline_color, width=width)
+        y2 = y0 - radius * 0.4
+        canvas.create_polygon(x0, y2, x0, y1, x1, y1, x1, y0, fill=wholesale_color, outline=outline_color, width=width)
+        draw_text(str(node.name), xc, yc, color=black)
     elif isinstance(node, Factory):
-        canvas.create_polygon(x0, y0, x0, y1, x1, y1, x1, y0, fill='#d21404', outline=outline_color, width=width)
+        chimney_height = radius * 1.5
+        chimney_base_width = 0.3 * radius
+        chimney_top_width = chimney_base_width * 1
+        roof_height = radius / 2
+
+        chimney_width_offset = (chimney_base_width - chimney_top_width) / 2
+
+        y2 = y0 - chimney_height
+        y3 = y0 - roof_height
+        x2 = x1 - chimney_width_offset
+        x3 = x2 - chimney_top_width
+        x4 = x1 - chimney_base_width
+        x5 = (x0 + x4) / 2
+
+        canvas.create_polygon(x0, y0, x0, y1, x1, y1, x1, y0, x2, y2, x3, y2, x4, y0, x5, y3, x5, y0, x0, y3,
+                              fill=factory_color,
+                              outline=outline_color, width=width)
+        draw_text(str(node.name), xc, yc)
 
 
 def draw_edge(node_a, node_b, color):
-    print(color)
     canvas.create_line(node_a.position.x, node_a.position.y, node_b.position.x, node_b.position.y, width=2,
                        fill=color)
 
@@ -39,22 +56,13 @@ def draw_network(network, routes=None, color_routes=True):
 
     drawn_nodes = []
 
-    preset_colors = color_generator()
-    color_dict = {}
+    color_gen = RouteColorsGenerator()
     route_colors = []
 
     if routes is not None:
         for route in routes:
-            color = 'black'
-            if not route.van_route or not color_routes:
-                pass
-            else:
-                origin = route.origin.name
-                if origin in color_dict:
-                    color = color_neighbor(color_dict[origin])
-                else:
-                    color = next(preset_colors)
-                    color_dict[origin] = color
+            color = outline_default_color if (not route.van_route or not color_routes) else color_gen.get_color(route)
+
             route_colors.append(color)
             for i in range(len(route.ordered_nodes)):
                 node_a = route.ordered_nodes[i]
@@ -74,13 +82,9 @@ def draw_network(network, routes=None, color_routes=True):
             draw_node(node)
 
 
-def color_generator():
-    colors = ['#d0312d', '#3cb043', '#1338be', '#f6ca03']
-    idx = 0
-    while True:
-        yield colors[idx]
-        idx = (idx + 1) % len(colors)
+def draw_text(text, x=0, y=0, color=text_default_color):
+    canvas.create_text(x, y, text=text, fill=color, font=('Helvetica', 12, 'bold'))
 
 
-def color_neighbor(color):
-    return color
+def draw_point(x, y):
+    canvas.create_oval(x - 2, y - 2, x + 2, y + 2, fill='#002200')

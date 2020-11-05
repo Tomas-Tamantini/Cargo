@@ -6,7 +6,7 @@ from models.network import Network
 from models.node import Factory, Wholesale, Retailer
 
 
-def random_network(num_factories=1, num_wholesales=3, num_retailers=30, demand_range=(10, 30),
+def random_network(num_factories=2, num_wholesales=4, num_retailers=20, demand_range=(10, 30),
                    city_dimensions=(300, 300), padding=0.05):
     city_area = city_dimensions[0] * city_dimensions[1]
     num_nodes = num_factories + num_wholesales + num_retailers

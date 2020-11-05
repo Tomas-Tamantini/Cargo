@@ -10,11 +10,12 @@ from scripts.chromosome_generator import random_chromosome
 from scripts.optimize import AnnealingSolver
 
 # Parameters
-rnd_seed = 8
-nit = 1000
+rnd_seed = 12
+nit = 100000
 initial_temperature = 10000
 final_temperature = 1
 animate = False
+sleep_time = None
 
 # Setup
 seed(rnd_seed)
@@ -24,8 +25,10 @@ chromosome = random_chromosome(net)
 solver = AnnealingSolver(chromosome, initial_temperature, final_temperature, nit)
 
 draw_network(net)
+
 root.update()
-sleep(1)
+if sleep_time is not None:
+    sleep(sleep_time)
 
 for i in range(nit):
     if i % (nit // 20) == 0:
@@ -35,8 +38,9 @@ for i in range(nit):
     if change_happened and animate:
         draw_network(net, chromosome_to_routes(solver.chromosome))
         root.update()
-        # sleep(.1)
+
 print('100%')
+print('\n'.join(map(str, chromosome_to_routes(solver.chromosome))) + f'\nTotal cost: {solver.current_cost}')
 draw_network(net, chromosome_to_routes(solver.chromosome))
 
 plot(nit, solver.cost_history, solver.temp_history)
