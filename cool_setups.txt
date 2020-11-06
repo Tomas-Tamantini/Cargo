@@ -1,0 +1,38 @@
+a)
+rnd_seed = 17
+num_factories, num_wholesales, num_retailers = 2, 4, 20
+demand_range = (10, 30)
+nit = 10000
+initial_temperature = 10000
+final_temperature = 1
+animate = False
+
+
+b)
+rnd_seed = 26
+num_factories, num_wholesales, num_retailers = 2, 3, 10
+demand_range = (30, 50)
+nit = 2000
+initial_temperature = 4000
+final_temperature = 1
+animate = True
+
+c)
+rnd_seed = 28
+num_factories, num_wholesales, num_retailers = 2, 3, 10
+demand_range = (30, 50)
+nit = 2000
+initial_temperature = 4000
+final_temperature = 1
+animate = True
+
+d)
+rnd_seed = 30
+num_factories, num_wholesales, num_retailers = 3, 4, 13
+demand_range = (30, 50)
+nit = 2000
+initial_temperature = 4000
+final_temperature = 1
+animate = True
+
+

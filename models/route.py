@@ -1,4 +1,4 @@
-from models.vehicle import TruckSpecs, VanSpecs
+from models.vehicle import truck, van
 from scripts.str_scripts import list_to_str
 
 
@@ -17,9 +17,9 @@ class Route:
         for i in range(len(self.ordered_nodes)):
             total_distance += self.ordered_nodes[i].dist(self.ordered_nodes[i - 1])
         if self.van_route:
-            return total_distance * VanSpecs['cost_per_km']
+            return total_distance * van.cost_per_km
         else:
-            return total_distance * TruckSpecs['cost_per_km']
+            return total_distance * truck.cost_per_km
 
     def __str__(self):
         header = 'Van:' if self.van_route else 'Truck:'
